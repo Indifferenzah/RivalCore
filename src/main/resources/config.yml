@@ -1,0 +1,61 @@
+settings:
+  debug: true
+  auto-reveal-teams-at-90min: true
+  initial-team-actionbar-seconds: 15
+  play-lightning-sound-on-death: true
+  respawn-lock-minutes: 30
+  total-match-minutes: 120
+  assign-late-joiners-to-smaller-team: true
+  bossbar-update-ticks: 20
+  default-pvp-enabled: true
+
+spawn:
+  world: world
+  x: 0.0
+  y: 77.0
+  z: 0.0
+  yaw: 6.388397216796875
+  pitch: 43.0760498046875
+
+messages:
+  prefix: '&8[&cRivalCore&8] '
+  no-permission: '&cNon hai il permesso.'
+  game-already-started: '&cLa partita è già iniziata.'
+  game-started: '&aLa partita è iniziata! Buona fortuna a tutti.'
+  game-not-started: '&cLa partita non è ancora iniziata.'
+  game-stopped: '&cLa partita è stata fermata.'
+  after-30: '&eSono passati &630 minuti&e! &cIl respawn non è più consentito. &7Da
+    ora in poi la morte è definitiva.'
+  after-60: '&eSono passati &660 minuti&e! &eTra &630 minuti &everranno rivelati i
+    team. &cPreparati al &4&lDEATHMATCH.'
+  after-90: '&4&lDEATHMATCH! &eSono passati &690 minuti&e! &aI team sono stati rivelati.
+    &6Combatti insieme alla tua squadra e vinci!'
+  team-red: '&cSei nel team ROSSO'
+  team-blue: '&bSei nel team BLU'
+  teams-public-revealed: '&aI team sono stati rivelati a tutti.'
+  teams-already-revealed: '&eI team sono già stati rivelati.'
+  teams-game-not-started: '&cNessuna partita attiva.'
+  spawn-set: '&aSpawn impostato correttamente.'
+  pvp-enabled: '&aPvP abilitato.'
+  pvp-disabled: '&cPvP disabilitato.'
+  pvp-blocked: '&cIl PvP è disabilitato.'
+  timer-ended: '&cIl tempo è terminato! &ePvP disabilitato, tutti teleportati allo
+    spawn.'
+  game-status-running: '&aPartita in corso. Fase: {phase} | Tempo rimanente: {time}'
+  game-status-not-running: '&cNessuna partita in corso.'
+  late-joiner-assigned: '&aSei stato assegnato al team {team}.'
+  player-died-spectator: '&cSei morto definitivamente. Sei ora in modalità spettatore.'
+  death-broadcast: '&c{player} &7è morto definitivamente.'
+  config-reloaded: '&aConfigurazione ricaricata con successo.'
+  respawn-restored: '&aSei stato riportato in partita. Buona fortuna!'
+  respawn-broadcast: '&a{player} &eè stato riportato in vita.'
+  respawn-not-eliminated: '&e{player} non è stato eliminato.'
+  respawn-no-target: '&cGiocatore non trovato o non online.'
+  respawn-usage: '&eUso: /respawn <giocatore>'
+
+  bossbar:
+    phase-initial: '&aRespawn libero | {time}'
+    phase-two: '&cMorte definitiva | {time}'
+    phase-three: '&eTeam rivelati | {time}'
+    phase-final: '&4Fase finale | {time}'
+    ended: '&cPartita terminata'

@@ -1,0 +1,61 @@
+name: RivalCore
+version: 1.0.0
+main: com.riluttante.rivalcore.RivalCorePlugin
+api-version: '1.21'
+description: UHC-style last man standing plugin
+authors: [RIluttante]
+
+commands:
+  rivalcore:
+    description: Main RivalCore command
+    usage: /rivalcore [help|reload]
+  start:
+    description: Start the game
+    usage: /start
+    permission: rivalcore.command.start
+  teams:
+    description: Manage teams
+    usage: /teams <show|list>
+    permission: rivalcore.command.teams
+  pvp:
+    description: Control PvP state
+    usage: /pvp <enable|disable>
+    permission: rivalcore.command.pvp
+  setspawn:
+    description: Set the spawn location
+    usage: /setspawn
+    permission: rivalcore.command.setspawn
+  game:
+    description: Game management
+    usage: /game <status|stop>
+    permission: rivalcore.command.game
+  respawn:
+    description: Respawn an eliminated player
+    usage: /respawn <giocatore>
+    permission: rivalcore.command.respawn
+
+permissions:
+  rivalcore.command.start:
+    description: Allows starting the game
+    default: op
+  rivalcore.command.teams.show:
+    description: Allows revealing teams
+    default: op
+  rivalcore.command.pvp.enable:
+    description: Allows enabling PvP
+    default: op
+  rivalcore.command.pvp.disable:
+    description: Allows disabling PvP
+    default: op
+  rivalcore.command.setspawn:
+    description: Allows setting spawn
+    default: op
+  rivalcore.command.game:
+    description: Allows game management
+    default: op
+  rivalcore.command.reload:
+    description: Allows reloading the configuration
+    default: op
+  rivalcore.command.respawn:
+    description: Allows respawning an eliminated player
+    default: op
