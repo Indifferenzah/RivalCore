@@ -190,7 +190,7 @@ public class RivalCorePlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(
             new PlayerQuitListener(this, gameService, bossBarService), this);
         getServer().getPluginManager().registerEvents(
-            new PvpControlListener(this, pvpService, messageService), this);
+            new PvpControlListener(this, pvpService, messageService, teamService, gameService), this);
         getServer().getPluginManager().registerEvents(
             new PlayerChatListener(gameService, teamService, configManager), this);
     }

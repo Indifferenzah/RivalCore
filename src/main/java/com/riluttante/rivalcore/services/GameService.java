@@ -141,7 +141,6 @@ public class GameService {
         eliminatedPlayers.clear();
         currentGame = new GameData(GameState.WAITING, 0L, false, configManager.isDefaultPvpEnabled());
         gameStateRepository.resetGameData();
-        teamService.clearTeams();
 
         messageService.broadcastMessage("game-stopped");
         plugin.getLogger().info("Game stopped by: " + sender.getName());

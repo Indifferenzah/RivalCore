@@ -1,5 +1,5 @@
 name: RivalCore
-version: 1.0.0
+version: 2.0.0
 main: com.riluttante.rivalcore.RivalCorePlugin
 api-version: '1.21'
 description: UHC-style last man standing plugin

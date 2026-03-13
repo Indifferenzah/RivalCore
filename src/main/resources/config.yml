@@ -124,6 +124,7 @@ messages:
   pvp-enabled: '&aPvP abilitato.'
   pvp-disabled: '&cPvP disabilitato.'
   pvp-blocked: '&cIl PvP è disabilitato.'
+  friendly-fire-blocked: '&cNon puoi colpire un compagno di squadra!'
   # Fine partita.
   timer-ended: '&cIl tempo è terminato! &ePvP disabilitato, tutti teleportati allo
     spawn.'

@@ -125,12 +125,31 @@ public class SidebarService {
         String hpFormat = hpEnabled ? configManager.getTabHpFormat() : null;
 
         boolean teamsRevealed = teamService.isTeamsRevealed();
-
-        // Pre-compute max name pixel width for aligned HP column
         Collection<? extends Player> online = Bukkit.getOnlinePlayers();
-        int maxNamePx = online.stream()
-            .mapToInt(p -> namePixelWidth(p.getName()))
-            .max().orElse(0);
+
+        // Pre-compute team data per player (prefix string + name color)
+        record TabEntry(String teamPrefix, String nameColor) {}
+        java.util.Map<java.util.UUID, TabEntry> entries = new java.util.HashMap<>();
+        for (Player p : online) {
+            String teamPrefix = "";
+            String nameColor  = "";
+            if (teamsRevealed && !gameService.isEliminated(p.getUniqueId())) {
+                GameTeam team = teamService.getTeam(p.getUniqueId());
+                if (team != null) {
+                    boolean isRed = team == GameTeam.RED;
+                    teamPrefix = isRed ? configManager.getChatPrefixRed() + " "
+                                       : configManager.getChatPrefixBlue() + " ";
+                    nameColor  = isRed ? "&c" : "&b";
+                }
+            }
+            entries.put(p.getUniqueId(), new TabEntry(teamPrefix, nameColor));
+        }
+
+        // Max total visual width = prefixPx + namePx across all players
+        int maxTotalPx = online.stream().mapToInt(p -> {
+            TabEntry e = entries.get(p.getUniqueId());
+            return namePixelWidth(stripColors(e.teamPrefix())) + namePixelWidth(p.getName());
+        }).max().orElse(0);
 
         for (Player p : online) {
             if (header != null && footer != null) {
@@ -141,24 +160,14 @@ public class SidebarService {
                 p.sendPlayerListFooter(footer);
             }
             if (hpFormat != null) {
-                // Resolve team prefix and name color
-                String teamPrefix = "";
-                String nameColor = "";
-                if (teamsRevealed && !gameService.isEliminated(p.getUniqueId())) {
-                    GameTeam team = teamService.getTeam(p.getUniqueId());
-                    if (team != null) {
-                        boolean isRed = team == GameTeam.RED;
-                        teamPrefix = isRed ? configManager.getChatPrefixRed() + " "
-                                           : configManager.getChatPrefixBlue() + " ";
-                        nameColor  = isRed ? "&c" : "&b";
-                    }
-                }
-
-                // Pad the plain name, then prepend color
-                String paddedName = nameColor + padName(p.getName(), maxNamePx);
+                TabEntry e = entries.get(p.getUniqueId());
+                int prefixPx = namePixelWidth(stripColors(e.teamPrefix()));
+                int usedPx   = prefixPx + namePixelWidth(p.getName());
+                int spaces   = Math.max(2, (int) Math.ceil((double)(maxTotalPx - usedPx + SPACE_PX * 2) / SPACE_PX));
+                String paddedName = e.nameColor() + p.getName() + " ".repeat(spaces);
 
                 String text = hpFormat
-                    .replace("%team%", teamPrefix)
+                    .replace("%team%", e.teamPrefix())
                     .replace("%name%", paddedName)
                     .replace("%hp%", String.valueOf((int) p.getHealth()))
                     .replace("%online%", String.valueOf(online.size()));
@@ -183,21 +192,17 @@ public class SidebarService {
 
     private static int charPx(char c) {
         return switch (c) {
-            case 'i', 'l'                               -> 3;
-            case 'f', 'I', 'j', 't'                    -> 5;
+            case 'i', 'l', '|', '!'                    -> 3;
+            case 'f', 'I', 'j', 't', '[', ']', '(', ')' -> 5;
             case 'm', 'w', 'M', 'W'                    -> 9;
+            case ' '                                    -> SPACE_PX;
             default                                     -> 6;
         };
     }
 
-    /**
-     * Pads the name with spaces so that all names reach the same pixel column.
-     * Always adds at least 2 spaces as a visual gap before the HP value.
-     */
-    private static String padName(String name, int maxPx) {
-        int missing = maxPx - namePixelWidth(name);
-        int spaces = Math.max(2, (int) Math.ceil((double)(missing + SPACE_PX * 2) / SPACE_PX));
-        return name + " ".repeat(spaces);
+    /** Removes Minecraft color/format codes (&X or §X) from a string. */
+    private static String stripColors(String s) {
+        return s.replaceAll("[&§][0-9a-fk-orA-FK-OR]", "");
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
