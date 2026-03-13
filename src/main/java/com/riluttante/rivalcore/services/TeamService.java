@@ -185,6 +185,33 @@ public class TeamService {
         }
     }
 
+    public void warnAllTeams() {
+        for (PlayerTeamData data : teamCache.values()) {
+            Player player = Bukkit.getPlayer(data.getUuid());
+            if (player == null || !player.isOnline()) continue;
+
+            String teamMessage = (data.getTeam() == GameTeam.RED)
+                ? configManager.getRawMessage("team-red")
+                : configManager.getRawMessage("team-blue");
+
+            final int totalTicks = 15 * 20;
+
+            new BukkitRunnable() {
+                int ticks = 0;
+
+                @Override
+                public void run() {
+                    if (ticks >= totalTicks || !player.isOnline()) {
+                        cancel();
+                        return;
+                    }
+                    player.sendActionBar(ColorUtil.colorize(teamMessage));
+                    ticks += 40;
+                }
+            }.runTaskTimer(plugin, 0L, 40L);
+        }
+    }
+
     public boolean isTeamsRevealed() {
         return teamsRevealed;
     }

@@ -42,7 +42,7 @@ public class TeamsCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ColorUtil.colorize("&eUsage: /teams <show|list>"));
+            sender.sendMessage(ColorUtil.colorize("&eUsage: /teams <show|list|warn>"));
             return true;
         }
 
@@ -89,7 +89,15 @@ public class TeamsCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(ColorUtil.colorize("  " + color + data.getPlayerName() + " &8» " + color + teamName));
                 }
             }
-            default -> sender.sendMessage(ColorUtil.colorize("&eUsage: /teams <show|list>"));
+            case "warn" -> {
+                teamService.warnAllTeams();
+                if (sender instanceof Player player) {
+                    messageService.sendMessage(player, "teams-warn-sent");
+                } else {
+                    sender.sendMessage(ColorUtil.colorize("&aTeam warn inviato a tutti i giocatori."));
+                }
+            }
+            default -> sender.sendMessage(ColorUtil.colorize("&eUsage: /teams <show|list|warn>"));
         }
 
         return true;
@@ -98,7 +106,7 @@ public class TeamsCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("show", "list");
+            return Arrays.asList("show", "list", "warn");
         }
         return Collections.emptyList();
     }

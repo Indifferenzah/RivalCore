@@ -1,14 +1,90 @@
+# ============================================================
+#  SCOREBOARD
+# ============================================================
+scoreboard:
+  # Abilita o disabilita la scoreboard.
+  enabled: true
+  # Titolo visualizzato in cima alla scoreboard. Supporta codici colore (&).
+  title: '&6&lRivalUHC'
+  # Frequenza di aggiornamento della scoreboard, espressa in tick (20 tick = 1 secondo).
+  update-ticks: 20
+  # Righe della scoreboard. Placeholder disponibili:
+  # %top1_player%, %top1_kills%, %top2_player%, %top2_kills%, %top3_player%, %top3_kills%
+  lines:
+    - '&c&lClassifica uccisioni'
+    - '&e#1 &a%top1_player% &7- &c%top1_kills% kills'
+    - '&e#2 &a%top2_player% &7- &c%top2_kills% kills'
+    - '&e#3 &a%top3_player% &7- &c%top3_kills% kills'
+
+# ============================================================
+#  TAB (lista giocatori)
+# ============================================================
+# Il placeholder %hp% viene sostituito con i punti vita attuali del giocatore.
+tab:
+  # Abilita o disabilita la Tab.
+  hp-enabled: true
+  # Formato del nome giocatore nella Tab.
+  # %team% = prefisso team (vuoto se non rivelati), %name% = nome colorato, %hp% = punti vita
+  hp-format: '%team%%name%&cHP: &4%hp%'
+  # Intestazione mostrata sopra la lista giocatori nella Tab.
+  # Placeholder disponibili: %online%, %top1_player%, %top1_kills%, ecc.
+  header:
+    - '&6&lRivalUHC'
+    - ''
+  # Piè di pagina mostrato sotto la lista giocatori nella Tab.
+  footer:
+    - ''
+    - '&7Giocatori online: &e%online%'
+
+# ============================================================
+#  WORLD BORDER
+# ============================================================
+# Configura le fasi di restringimento del bordo della mappa.
+# I valori rappresentano il raggio del bordo in blocchi dal centro.
+border:
+  # Abilita o disabilita il restringimento automatico del bordo.
+  enabled: true
+  # Fase 1: il bordo si restringe da 1200 a 800 blocchi di raggio.
+  phase-1-start: 1200.0
+  phase-1-end: 800.0
+  # Fase 2: il bordo si restringe da 800 a 600 blocchi di raggio.
+  phase-2-start: 800.0
+  phase-2-end: 600.0
+  # Fase 3: il bordo si restringe da 600 a 200 blocchi di raggio.
+  phase-3-start: 600.0
+  phase-3-end: 200.0
+  # Durata di ciascuna fase in secondi (1800 = 30 minuti per fase).
+  phase-duration-seconds: 1800
+
+# ============================================================
+#  IMPOSTAZIONI GENERALI
+# ============================================================
 settings:
-  debug: true
+  # [SOLO SVILUPPO] Accelera le fasi a 1 minuto per il testing. NON usare in produzione.
+  debug: false
+  # Se true, i team vengono rivelati automaticamente a tutti i giocatori alla 90ª minuto.
   auto-reveal-teams-at-90min: true
+  # Durata in secondi per cui l'assegnazione del team è visibile nella ActionBar all'inizio della partita.
   initial-team-actionbar-seconds: 15
+  # Se true, riproduce un suono di fulmine quando un giocatore muore definitivamente.
   play-lightning-sound-on-death: true
+  # Minuti dall'inizio della partita dopo i quali il respawn viene disabilitato (morte definitiva).
   respawn-lock-minutes: 30
+  # Durata totale della partita in minuti. Allo scadere il PvP viene disabilitato e tutti vengono teletrasportati allo spawn.
   total-match-minutes: 120
-  assign-late-joiners-to-smaller-team: true
+  # Se true, i giocatori che entrano a partita iniziata vengono assegnati automaticamente al team con meno membri.
+  assign-late-joiners-to-smaller-team: false
+  # Frequenza di aggiornamento della BossBar, in tick (20 tick = 1 secondo).
   bossbar-update-ticks: 20
+  # Stato iniziale del PvP all'avvio della partita: true = PvP attivo, false = PvP disattivato.
   default-pvp-enabled: true
 
+# ============================================================
+#  SPAWN
+# ============================================================
+# IMPORTANTE: CONFIGURARE CON /setspawn.
+# Coordinate e rotazione del punto di spawn principale.
+# Yaw = rotazione orizzontale (0-360), Pitch = inclinazione verticale della visuale.
 spawn:
   world: world
   x: 0.0
@@ -17,6 +93,10 @@ spawn:
   yaw: 6.388397216796875
   pitch: 43.0760498046875
 
+# ============================================================
+#  MESSAGGI
+# ============================================================
+# Tutti i messaggi inviati ai giocatori. Supporta codici colore (&).
 messages:
   prefix: '&8[&cRivalCore&8] '
   no-permission: '&cNon hai il permesso.'
@@ -30,17 +110,24 @@ messages:
     team. &cPreparati al &4&lDEATHMATCH.'
   after-90: '&4&lDEATHMATCH! &eSono passati &690 minuti&e! &aI team sono stati rivelati.
     &6Combatti insieme alla tua squadra e vinci!'
+  # Messaggi ActionBar
   team-red: '&cSei nel team ROSSO'
   team-blue: '&bSei nel team BLU'
+  # /teams
   teams-public-revealed: '&aI team sono stati rivelati a tutti.'
   teams-already-revealed: '&eI team sono già stati rivelati.'
   teams-game-not-started: '&cNessuna partita attiva.'
+  teams-warn-sent: '&aWarn team inviato a tutti i giocatori.'
+  # /setspawn
   spawn-set: '&aSpawn impostato correttamente.'
+  # /pvp
   pvp-enabled: '&aPvP abilitato.'
   pvp-disabled: '&cPvP disabilitato.'
   pvp-blocked: '&cIl PvP è disabilitato.'
+  # Fine partita.
   timer-ended: '&cIl tempo è terminato! &ePvP disabilitato, tutti teleportati allo
     spawn.'
+  # {phase} = fase attuale, {time} = tempo rimanente.
   game-status-running: '&aPartita in corso. Fase: {phase} | Tempo rimanente: {time}'
   game-status-not-running: '&cNessuna partita in corso.'
   late-joiner-assigned: '&aSei stato assegnato al team {team}.'
@@ -52,10 +139,28 @@ messages:
   respawn-not-eliminated: '&e{player} non è stato eliminato.'
   respawn-no-target: '&cGiocatore non trovato o non online.'
   respawn-usage: '&eUso: /respawn <giocatore>'
+  # Prefissi team usati in {team} nel formato chat con team rivelati.
+  chat-prefix-red: '&c[ROSSO]'
+  chat-prefix-blue: '&b[BLU]'
+  # Formato chat senza team (prima del reveal o fuori partita).
+  # Placeholder: {player}, {message}
+  chat-format-default: '{player}&7: &f{message}'
+  # Formato chat con team rivelati. Placeholder: {team}, {player}, {message}
+  chat-format-team: '{team} {player}&7: &f{message}'
 
+  # ----------------------------------------------------------
+  #  BOSSBAR
+  # ----------------------------------------------------------
+  # Testi mostrati nella BossBar in cima allo schermo durante le varie fasi.
+  # {time} viene sostituito con il tempo rimanente nella fase corrente (es. "14:23").
   bossbar:
+    # Fase iniziale (0-30 min): il respawn è libero.
     phase-initial: '&aRespawn libero | {time}'
+    # Fase due (30-60 min): le morti sono definitive, il respawn è bloccato.
     phase-two: '&cMorte definitiva | {time}'
+    # Fase tre (60 min+): i team si riveleranno rivelati.
     phase-three: '&eTeam rivelati | {time}'
-    phase-final: '&4Fase finale | {time}'
+    # Fase finale: DEATHMATCH.
+    phase-final: '&4Deathmatch | {time}'
+    # Testo mostrato nella BossBar quando la partita è terminata.
     ended: '&cPartita terminata'

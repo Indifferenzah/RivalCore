@@ -1,9 +1,11 @@
 package com.riluttante.rivalcore.config;
 
 import com.riluttante.rivalcore.RivalCorePlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class ConfigManager {
 
@@ -132,6 +134,14 @@ public class ConfigManager {
         return plugin.getConfig().getString("messages.chat-prefix-blue", "&b[BLU]");
     }
 
+    public String getChatFormatDefault() {
+        return plugin.getConfig().getString("messages.chat-format-default", "{player}&7: &f{message}");
+    }
+
+    public String getChatFormatTeam() {
+        return plugin.getConfig().getString("messages.chat-format-team", "{team} {player}&7: &f{message}");
+    }
+
     public boolean isDebugMode() {
         return plugin.getConfig().getBoolean("settings.debug", false);
     }
@@ -143,6 +153,73 @@ public class ConfigManager {
      */
     public int getEffectiveTotalMatchMinutes() {
         return isDebugMode() ? 4 : getTotalMatchMinutes();
+    }
+
+    // Sidebar scoreboard
+    public boolean isSidebarEnabled() {
+        return plugin.getConfig().getBoolean("scoreboard.enabled", true);
+    }
+
+    public String getSidebarTitle() {
+        return plugin.getConfig().getString("scoreboard.title", "&6&lTop Kills");
+    }
+
+    public int getSidebarUpdateTicks() {
+        return plugin.getConfig().getInt("scoreboard.update-ticks", 20);
+    }
+
+    public List<String> getSidebarLines() {
+        return plugin.getConfig().getStringList("scoreboard.lines");
+    }
+
+    // Tab HP
+    public boolean isTabHpEnabled() {
+        return plugin.getConfig().getBoolean("tab.hp-enabled", true);
+    }
+
+    public String getTabHpFormat() {
+        return plugin.getConfig().getString("tab.hp-format", "%name%     &cHP: &4%hp%");
+    }
+
+    public List<String> getTabHeader() {
+        return plugin.getConfig().getStringList("tab.header");
+    }
+
+    public List<String> getTabFooter() {
+        return plugin.getConfig().getStringList("tab.footer");
+    }
+
+    // World border
+    public boolean isBorderEnabled() {
+        return plugin.getConfig().getBoolean("border.enabled", true);
+    }
+
+    public double getBorderPhase1Start() {
+        return plugin.getConfig().getDouble("border.phase-1-start", 1200.0);
+    }
+
+    public double getBorderPhase1End() {
+        return plugin.getConfig().getDouble("border.phase-1-end", 800.0);
+    }
+
+    public double getBorderPhase2Start() {
+        return plugin.getConfig().getDouble("border.phase-2-start", 800.0);
+    }
+
+    public double getBorderPhase2End() {
+        return plugin.getConfig().getDouble("border.phase-2-end", 600.0);
+    }
+
+    public double getBorderPhase3Start() {
+        return plugin.getConfig().getDouble("border.phase-3-start", 600.0);
+    }
+
+    public double getBorderPhase3End() {
+        return plugin.getConfig().getDouble("border.phase-3-end", 200.0);
+    }
+
+    public long getBorderPhaseDurationSeconds() {
+        return plugin.getConfig().getLong("border.phase-duration-seconds", 1800L);
     }
 
     // BossBar messages

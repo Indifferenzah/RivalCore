@@ -17,10 +17,13 @@ import com.riluttante.rivalcore.listeners.PlayerJoinListener;
 import com.riluttante.rivalcore.listeners.PlayerQuitListener;
 import com.riluttante.rivalcore.listeners.PlayerRespawnListener;
 import com.riluttante.rivalcore.listeners.PvpControlListener;
+import com.riluttante.rivalcore.services.BorderService;
 import com.riluttante.rivalcore.services.BossBarService;
 import com.riluttante.rivalcore.services.GameService;
+import com.riluttante.rivalcore.services.KillTrackerService;
 import com.riluttante.rivalcore.services.MessageService;
 import com.riluttante.rivalcore.services.PvpService;
+import com.riluttante.rivalcore.services.SidebarService;
 import com.riluttante.rivalcore.services.SpawnService;
 import com.riluttante.rivalcore.services.TeamService;
 import com.riluttante.rivalcore.services.TimerService;
@@ -44,6 +47,9 @@ public class RivalCorePlugin extends JavaPlugin {
     private TeamService teamService;
     private TimerService timerService;
     private GameService gameService;
+    private KillTrackerService killTrackerService;
+    private BorderService borderService;
+    private SidebarService sidebarService;
 
     @Override
     public void onEnable() {
@@ -85,6 +91,17 @@ public class RivalCorePlugin extends JavaPlugin {
         // Wire the circular reference
         timerService.setGameService(gameService);
 
+        // Wire optional services
+        killTrackerService = new KillTrackerService();
+        borderService = new BorderService(configManager);
+        sidebarService = new SidebarService(this, configManager, killTrackerService, teamService, gameService);
+        gameService.setKillTrackerService(killTrackerService);
+        gameService.setBorderService(borderService);
+        gameService.setSidebarService(sidebarService);
+
+        // Sidebar runs always (even before/after game)
+        sidebarService.start();
+
         // 5. Register commands
         registerCommands();
 
@@ -113,6 +130,11 @@ public class RivalCorePlugin extends JavaPlugin {
         // 2. Remove bossbar from all players
         if (bossBarService != null) {
             bossBarService.destroyBossBar();
+        }
+
+        // 3a. Stop sidebar/tab updates
+        if (sidebarService != null) {
+            sidebarService.stop();
         }
 
         // 3. Persist in-memory state
@@ -160,7 +182,7 @@ public class RivalCorePlugin extends JavaPlugin {
 
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(
-            new PlayerDeathListener(this, gameService, messageService, configManager), this);
+            new PlayerDeathListener(this, gameService, messageService, configManager, killTrackerService), this);
         getServer().getPluginManager().registerEvents(
             new PlayerRespawnListener(this, gameService, spawnService, messageService), this);
         getServer().getPluginManager().registerEvents(

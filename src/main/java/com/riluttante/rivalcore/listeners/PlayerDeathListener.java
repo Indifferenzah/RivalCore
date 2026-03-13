@@ -4,6 +4,7 @@ import com.riluttante.rivalcore.RivalCorePlugin;
 import com.riluttante.rivalcore.config.ConfigManager;
 import com.riluttante.rivalcore.models.GamePhase;
 import com.riluttante.rivalcore.services.GameService;
+import com.riluttante.rivalcore.services.KillTrackerService;
 import com.riluttante.rivalcore.services.MessageService;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -18,13 +19,16 @@ public class PlayerDeathListener implements Listener {
     private final GameService gameService;
     private final MessageService messageService;
     private final ConfigManager configManager;
+    private final KillTrackerService killTrackerService;
 
     public PlayerDeathListener(RivalCorePlugin plugin, GameService gameService,
-                                MessageService messageService, ConfigManager configManager) {
+                                MessageService messageService, ConfigManager configManager,
+                                KillTrackerService killTrackerService) {
         this.plugin = plugin;
         this.gameService = gameService;
         this.messageService = messageService;
         this.configManager = configManager;
+        this.killTrackerService = killTrackerService;
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -32,6 +36,12 @@ public class PlayerDeathListener implements Listener {
         if (!gameService.isGameRunning()) return;
 
         Player player = event.getEntity();
+
+        // Track kill for the killer
+        Player killer = player.getKiller();
+        if (killer != null) {
+            killTrackerService.recordKill(killer.getUniqueId(), killer.getName());
+        }
 
         // Play lightning sound to all online players if configured
         if (configManager.isPlayLightningSoundOnDeath()) {

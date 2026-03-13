@@ -7,8 +7,6 @@ import com.riluttante.rivalcore.services.TeamService;
 import com.riluttante.rivalcore.utils.ColorUtil;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,33 +27,59 @@ public class PlayerChatListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onChat(AsyncChatEvent event) {
-        if (!gameService.isGameRunning()) return;
-
-        // Show team prefix only after teams have been publicly revealed
-        if (!teamService.isTeamsRevealed()) return;
-
         Player player = event.getPlayer();
 
-        // Eliminated players (spectators) chat without team prefix
-        if (gameService.isEliminated(player.getUniqueId())) return;
+        boolean showTeam = gameService.isGameRunning()
+            && teamService.isTeamsRevealed()
+            && !gameService.isEliminated(player.getUniqueId());
 
-        GameTeam team = teamService.getTeam(player.getUniqueId());
-        if (team == null) return;
+        final String format;
+        final String teamPrefix;
 
-        boolean isRed = team == GameTeam.RED;
-        // Use dedicated methods with hardcoded fallbacks — safe even if the server's
-        // config.yml was created before these keys were added.
-        String rawPrefix = isRed ? configManager.getChatPrefixRed() : configManager.getChatPrefixBlue();
-        TextColor nameColor = isRed ? NamedTextColor.RED : NamedTextColor.AQUA;
-
-        // Format: [ROSSO] PlayerName: message
-        Component prefix = ColorUtil.colorize(rawPrefix);
-        Component space = Component.text(" ");
-        Component name = Component.text(player.getName(), nameColor);
-        Component separator = Component.text(": ", NamedTextColor.GRAY);
+        if (showTeam) {
+            GameTeam team = teamService.getTeam(player.getUniqueId());
+            if (team != null) {
+                format = configManager.getChatFormatTeam();
+                teamPrefix = team == GameTeam.RED
+                    ? configManager.getChatPrefixRed()
+                    : configManager.getChatPrefixBlue();
+            } else {
+                format = configManager.getChatFormatDefault();
+                teamPrefix = "";
+            }
+        } else {
+            format = configManager.getChatFormatDefault();
+            teamPrefix = "";
+        }
 
         event.renderer((source, sourceDisplayName, message, viewer) ->
-            prefix.append(space).append(name).append(separator).append(message)
+            buildMessage(format, player.getName(), teamPrefix, message)
         );
+    }
+
+    /**
+     * Builds the chat component by splitting the format on {message},
+     * resolving {team} and {player} in the surrounding text, then
+     * injecting the Adventure message component in the middle.
+     */
+    private Component buildMessage(String format, String playerName,
+                                   String teamPrefix, Component message) {
+        String resolved = format
+            .replace("{team}", teamPrefix)
+            .replace("{player}", playerName);
+
+        int msgIdx = resolved.indexOf("{message}");
+        if (msgIdx == -1) {
+            return ColorUtil.colorize(resolved);
+        }
+
+        String left  = resolved.substring(0, msgIdx);
+        String right = resolved.substring(msgIdx + "{message}".length());
+
+        Component result = ColorUtil.colorize(left).append(message);
+        if (!right.isEmpty()) {
+            result = result.append(ColorUtil.colorize(right));
+        }
+        return result;
     }
 }

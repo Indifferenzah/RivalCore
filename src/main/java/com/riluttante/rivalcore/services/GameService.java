@@ -9,6 +9,7 @@ import com.riluttante.rivalcore.models.GamePhase;
 import com.riluttante.rivalcore.models.GameState;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -32,6 +33,15 @@ public class GameService {
 
     private GameData currentGame;
     private final Set<UUID> eliminatedPlayers = new HashSet<>();
+
+    // Optional services wired after construction
+    private KillTrackerService killTrackerService;
+    private BorderService borderService;
+    private SidebarService sidebarService;
+
+    public void setKillTrackerService(KillTrackerService s) { this.killTrackerService = s; }
+    public void setBorderService(BorderService s) { this.borderService = s; }
+    public void setSidebarService(SidebarService s) { this.sidebarService = s; }
 
     public GameService(RivalCorePlugin plugin,
                        ConfigManager configManager,
@@ -90,6 +100,12 @@ public class GameService {
         // Start timer
         timerService.start(startTimestamp);
 
+        // Start world border phase 1
+        if (borderService != null) {
+            World world = Bukkit.getWorld(configManager.getSpawnWorld());
+            if (world != null) borderService.onGameStart(world);
+        }
+
         // Reveal team to each player via actionbar
         for (Player player : onlinePlayers) {
             teamService.revealTeamToPlayer(player);
@@ -113,6 +129,10 @@ public class GameService {
 
         timerService.stop();
         bossBarService.destroyBossBar();
+        if (borderService != null) {
+            World world = Bukkit.getWorld(configManager.getSpawnWorld());
+            if (world != null) borderService.resetBorder(world);
+        }
 
         // Teleport everyone to spawn and disable PvP before clearing state
         spawnService.teleportAllToSpawn();
@@ -141,9 +161,17 @@ public class GameService {
         switch (phase) {
             case PHASE_TWO -> {
                 messageService.broadcastMessage("after-30");
+                if (borderService != null) {
+                    World world = Bukkit.getWorld(configManager.getSpawnWorld());
+                    if (world != null) borderService.onPhaseTwo(world);
+                }
             }
             case PHASE_THREE -> {
                 messageService.broadcastMessage("after-60");
+                if (borderService != null) {
+                    World world = Bukkit.getWorld(configManager.getSpawnWorld());
+                    if (world != null) borderService.onPhaseThree(world);
+                }
             }
             case FINAL -> {
                 messageService.broadcastMessage("after-90");
@@ -153,6 +181,10 @@ public class GameService {
                         currentGame.setTeamsRevealed(true);
                         gameStateRepository.saveGameData(currentGame);
                     }
+                }
+                if (borderService != null) {
+                    World world = Bukkit.getWorld(configManager.getSpawnWorld());
+                    if (world != null) borderService.onFinalPhase(world);
                 }
             }
             case ENDED -> {
@@ -166,6 +198,10 @@ public class GameService {
         messageService.broadcastMessage("timer-ended");
         pvpService.disablePvP();
         spawnService.teleportAllToSpawn();
+        if (borderService != null) {
+            World world = Bukkit.getWorld(configManager.getSpawnWorld());
+            if (world != null) borderService.resetBorder(world);
+        }
 
         if (currentGame != null) {
             currentGame.setState(GameState.ENDED);
@@ -196,6 +232,20 @@ public class GameService {
 
             // Restore timer
             timerService.start(data.getStartTimestamp());
+
+            // Restore world border to current phase
+            if (borderService != null) {
+                World world = Bukkit.getWorld(configManager.getSpawnWorld());
+                if (world != null) {
+                    switch (timerService.getCurrentPhase()) {
+                        case INITIAL    -> borderService.onGameStart(world);
+                        case PHASE_TWO  -> borderService.onPhaseTwo(world);
+                        case PHASE_THREE -> borderService.onPhaseThree(world);
+                        case FINAL      -> borderService.onFinalPhase(world);
+                        default -> {}
+                    }
+                }
+            }
 
             // Re-apply scoreboard if teams were revealed
             if (data.isTeamsRevealed()) {

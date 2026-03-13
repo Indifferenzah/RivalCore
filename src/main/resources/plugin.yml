@@ -3,7 +3,7 @@ version: 1.0.0
 main: com.riluttante.rivalcore.RivalCorePlugin
 api-version: '1.21'
 description: UHC-style last man standing plugin
-authors: [RIluttante]
+authors: [indifferenzah]
 
 commands:
   rivalcore:

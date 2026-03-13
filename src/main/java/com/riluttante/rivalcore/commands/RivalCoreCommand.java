@@ -48,6 +48,7 @@ public class RivalCoreCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(ColorUtil.colorize("  &e/game stop &8» &7Ferma la partita"));
         sender.sendMessage(ColorUtil.colorize("  &e/teams show &8» &7Rivela i team pubblicamente"));
         sender.sendMessage(ColorUtil.colorize("  &e/teams list &8» &7Lista giocatori per team"));
+        sender.sendMessage(ColorUtil.colorize("  &e/teams warn &8» &7Mostra il team in actionbar per 15s"));
         sender.sendMessage(ColorUtil.colorize("  &e/pvp enable|disable &8» &7Abilita/disabilita PvP"));
         sender.sendMessage(ColorUtil.colorize("  &e/setspawn &8» &7Imposta lo spawn della partita"));
         sender.sendMessage(ColorUtil.colorize("  &e/respawn <giocatore> &8» &7Riporta un eliminato in partita"));
