@@ -1,8 +1,10 @@
-# RivalCore
+# <p align="center">RivalCore</p>
 
 > UHC-style last man standing plugin for **Paper 1.21.1**
 
-![Banner](https://i.imgur.com/8wntLVV.png)
+<p align="center">
+  <img src="https://i.imgur.com/8wntLVV.png" alt="RivalCore Logo"/>
+</p>
 
 ---
 
