@@ -41,7 +41,7 @@
     </dependencies>
 
     <build>
-        <finalName>RivalCore-1.0.0</finalName>
+        <finalName>RivalCore</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
