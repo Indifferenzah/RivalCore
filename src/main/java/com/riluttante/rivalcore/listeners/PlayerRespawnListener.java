@@ -21,7 +21,7 @@ public class PlayerRespawnListener implements Listener {
     private final MessageService messageService;
 
     public PlayerRespawnListener(RivalCorePlugin plugin, GameService gameService,
-                                  SpawnService spawnService, MessageService messageService) {
+                                 SpawnService spawnService, MessageService messageService) {
         this.plugin = plugin;
         this.gameService = gameService;
         this.spawnService = spawnService;

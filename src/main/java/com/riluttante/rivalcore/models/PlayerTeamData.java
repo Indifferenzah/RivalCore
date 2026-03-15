@@ -15,9 +15,23 @@ public class PlayerTeamData {
         this.assignedAt = assignedAt;
     }
 
-    public UUID getUuid() { return uuid; }
-    public String getPlayerName() { return playerName; }
-    public GameTeam getTeam() { return team; }
-    public long getAssignedAt() { return assignedAt; }
-    public void setPlayerName(String playerName) { this.playerName = playerName; }
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public GameTeam getTeam() {
+        return team;
+    }
+
+    public long getAssignedAt() {
+        return assignedAt;
+    }
 }

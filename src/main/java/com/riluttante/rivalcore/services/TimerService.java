@@ -14,11 +14,10 @@ public class TimerService {
     private final RivalCorePlugin plugin;
     private final ConfigManager configManager;
     private final BossBarService bossBarService;
+    private final Set<GamePhase> firedMilestones = new HashSet<>();
     private GameService gameService;
-
     private long startTimestamp = 0L;
     private BukkitTask task;
-    private final Set<GamePhase> firedMilestones = new HashSet<>();
 
     public TimerService(RivalCorePlugin plugin, ConfigManager configManager, BossBarService bossBarService) {
         this.plugin = plugin;
@@ -37,10 +36,10 @@ public class TimerService {
         // Pre-populate milestones that have already passed (in case of restore)
         long elapsedMinutes = getElapsedSeconds() / 60;
         int total = configManager.getEffectiveTotalMatchMinutes();
-        if (elapsedMinutes >= total / 4)     firedMilestones.add(GamePhase.PHASE_TWO);
-        if (elapsedMinutes >= total / 2)     firedMilestones.add(GamePhase.PHASE_THREE);
+        if (elapsedMinutes >= total / 4) firedMilestones.add(GamePhase.PHASE_TWO);
+        if (elapsedMinutes >= total / 2) firedMilestones.add(GamePhase.PHASE_THREE);
         if (elapsedMinutes >= total * 3 / 4) firedMilestones.add(GamePhase.FINAL);
-        if (elapsedMinutes >= total)          firedMilestones.add(GamePhase.ENDED);
+        if (elapsedMinutes >= total) firedMilestones.add(GamePhase.ENDED);
 
         int updateTicks = configManager.getBossbarUpdateTicks();
         task = new BukkitRunnable() {
@@ -68,11 +67,11 @@ public class TimerService {
         long elapsedMinutes = getElapsedSeconds() / 60;
         int total = configManager.getEffectiveTotalMatchMinutes();
 
-        if (elapsedMinutes >= total / 4     && !firedMilestones.contains(GamePhase.PHASE_TWO)) {
+        if (elapsedMinutes >= total / 4 && !firedMilestones.contains(GamePhase.PHASE_TWO)) {
             firedMilestones.add(GamePhase.PHASE_TWO);
             if (gameService != null) gameService.onTimerMilestone(GamePhase.PHASE_TWO);
         }
-        if (elapsedMinutes >= total / 2     && !firedMilestones.contains(GamePhase.PHASE_THREE)) {
+        if (elapsedMinutes >= total / 2 && !firedMilestones.contains(GamePhase.PHASE_THREE)) {
             firedMilestones.add(GamePhase.PHASE_THREE);
             if (gameService != null) gameService.onTimerMilestone(GamePhase.PHASE_THREE);
         }
@@ -80,7 +79,7 @@ public class TimerService {
             firedMilestones.add(GamePhase.FINAL);
             if (gameService != null) gameService.onTimerMilestone(GamePhase.FINAL);
         }
-        if (elapsedMinutes >= total          && !firedMilestones.contains(GamePhase.ENDED)) {
+        if (elapsedMinutes >= total && !firedMilestones.contains(GamePhase.ENDED)) {
             firedMilestones.add(GamePhase.ENDED);
             if (gameService != null) gameService.onTimerMilestone(GamePhase.ENDED);
         }
@@ -100,10 +99,10 @@ public class TimerService {
     public GamePhase getCurrentPhase() {
         long elapsedMinutes = getElapsedSeconds() / 60;
         int total = configManager.getEffectiveTotalMatchMinutes();
-        if (elapsedMinutes < total / 4)     return GamePhase.INITIAL;
-        if (elapsedMinutes < total / 2)     return GamePhase.PHASE_TWO;
+        if (elapsedMinutes < total / 4) return GamePhase.INITIAL;
+        if (elapsedMinutes < total / 2) return GamePhase.PHASE_TWO;
         if (elapsedMinutes < total * 3 / 4) return GamePhase.PHASE_THREE;
-        if (elapsedMinutes < total)         return GamePhase.FINAL;
+        if (elapsedMinutes < total) return GamePhase.FINAL;
         return GamePhase.ENDED;
     }
 

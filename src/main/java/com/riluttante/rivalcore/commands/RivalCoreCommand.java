@@ -34,7 +34,7 @@ public class RivalCoreCommand implements CommandExecutor, TabCompleter {
             case "help" -> sendHelp(sender);
             case "reload" -> handleReload(sender);
             default -> sender.sendMessage(ColorUtil.colorize(
-                configManager.getPrefix() + "&cUso: /rivalcore [help|reload]"));
+                    configManager.getPrefix() + "&cUso: /rivalcore [help|reload]"));
         }
         return true;
     }
@@ -72,7 +72,7 @@ public class RivalCoreCommand implements CommandExecutor, TabCompleter {
             messageService.sendMessage(player, "config-reloaded");
         } else {
             sender.sendMessage(ColorUtil.colorize(
-                configManager.getPrefix() + "&aConfigurazione ricaricata con successo."));
+                    configManager.getPrefix() + "&aConfigurazione ricaricata con successo."));
         }
     }
 
@@ -80,8 +80,8 @@ public class RivalCoreCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             return Arrays.stream(new String[]{"help", "reload"})
-                .filter(s -> s.startsWith(args[0].toLowerCase()))
-                .toList();
+                    .filter(s -> s.startsWith(args[0].toLowerCase()))
+                    .toList();
         }
         return Collections.emptyList();
     }

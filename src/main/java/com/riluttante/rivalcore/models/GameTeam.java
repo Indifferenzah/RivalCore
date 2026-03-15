@@ -14,14 +14,22 @@ public enum GameTeam {
         this.colorCode = colorCode;
     }
 
-    public String getId() { return id; }
-    public String getDisplayName() { return displayName; }
-    public String getColorCode() { return colorCode; }
-
     public static GameTeam fromId(String id) {
         for (GameTeam t : values()) {
             if (t.id.equalsIgnoreCase(id)) return t;
         }
         return null;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getColorCode() {
+        return colorCode;
     }
 }

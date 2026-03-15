@@ -25,7 +25,7 @@ public class TeamRepository {
 
     public void savePlayerTeam(PlayerTeamData data) {
         String sql = "MERGE INTO player_teams (uuid, player_name, team, assigned_at) " +
-                     "KEY(uuid) VALUES(?, ?, ?, ?)";
+                "KEY(uuid) VALUES(?, ?, ?, ?)";
         try (Connection conn = databaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, data.getUuid().toString());

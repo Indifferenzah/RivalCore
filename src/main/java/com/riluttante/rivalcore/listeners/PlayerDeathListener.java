@@ -22,8 +22,8 @@ public class PlayerDeathListener implements Listener {
     private final KillTrackerService killTrackerService;
 
     public PlayerDeathListener(RivalCorePlugin plugin, GameService gameService,
-                                MessageService messageService, ConfigManager configManager,
-                                KillTrackerService killTrackerService) {
+                               MessageService messageService, ConfigManager configManager,
+                               KillTrackerService killTrackerService) {
         this.plugin = plugin;
         this.gameService = gameService;
         this.messageService = messageService;

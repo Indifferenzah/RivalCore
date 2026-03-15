@@ -85,10 +85,10 @@ public class RespawnCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             // Suggest only online players who are currently eliminated
             return Bukkit.getOnlinePlayers().stream()
-                .filter(p -> gameService.isEliminated(p.getUniqueId()))
-                .map(Player::getName)
-                .filter(name -> name.toLowerCase().startsWith(args[0].toLowerCase()))
-                .toList();
+                    .filter(p -> gameService.isEliminated(p.getUniqueId()))
+                    .map(Player::getName)
+                    .filter(name -> name.toLowerCase().startsWith(args[0].toLowerCase()))
+                    .toList();
         }
         return Collections.emptyList();
     }

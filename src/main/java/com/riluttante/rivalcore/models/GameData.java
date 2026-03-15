@@ -13,12 +13,35 @@ public class GameData {
         this.pvpEnabled = pvpEnabled;
     }
 
-    public GameState getState() { return state; }
-    public void setState(GameState state) { this.state = state; }
-    public long getStartTimestamp() { return startTimestamp; }
-    public void setStartTimestamp(long startTimestamp) { this.startTimestamp = startTimestamp; }
-    public boolean isTeamsRevealed() { return teamsRevealed; }
-    public void setTeamsRevealed(boolean teamsRevealed) { this.teamsRevealed = teamsRevealed; }
-    public boolean isPvpEnabled() { return pvpEnabled; }
-    public void setPvpEnabled(boolean pvpEnabled) { this.pvpEnabled = pvpEnabled; }
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+    }
+
+    public long getStartTimestamp() {
+        return startTimestamp;
+    }
+
+    public void setStartTimestamp(long startTimestamp) {
+        this.startTimestamp = startTimestamp;
+    }
+
+    public boolean isTeamsRevealed() {
+        return teamsRevealed;
+    }
+
+    public void setTeamsRevealed(boolean teamsRevealed) {
+        this.teamsRevealed = teamsRevealed;
+    }
+
+    public boolean isPvpEnabled() {
+        return pvpEnabled;
+    }
+
+    public void setPvpEnabled(boolean pvpEnabled) {
+        this.pvpEnabled = pvpEnabled;
+    }
 }

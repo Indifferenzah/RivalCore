@@ -14,12 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class TeamService {
 
@@ -72,8 +67,8 @@ public class TeamService {
         if (data == null) return;
 
         String teamMessage = (data.getTeam() == GameTeam.RED)
-            ? configManager.getRawMessage("team-red")
-            : configManager.getRawMessage("team-blue");
+                ? configManager.getRawMessage("team-red")
+                : configManager.getRawMessage("team-blue");
 
         int actionbarSeconds = configManager.getInitialActionbarSeconds();
         int totalTicks = actionbarSeconds * 20;
@@ -191,8 +186,8 @@ public class TeamService {
             if (player == null || !player.isOnline()) continue;
 
             String teamMessage = (data.getTeam() == GameTeam.RED)
-                ? configManager.getRawMessage("team-red")
-                : configManager.getRawMessage("team-blue");
+                    ? configManager.getRawMessage("team-red")
+                    : configManager.getRawMessage("team-blue");
 
             final int totalTicks = 15 * 20;
 

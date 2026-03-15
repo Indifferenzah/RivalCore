@@ -30,18 +30,12 @@ public class GameService {
     private final BossBarService bossBarService;
     private final TeamService teamService;
     private final TimerService timerService;
-
-    private GameData currentGame;
     private final Set<UUID> eliminatedPlayers = new HashSet<>();
-
+    private GameData currentGame;
     // Optional services wired after construction
     private KillTrackerService killTrackerService;
     private BorderService borderService;
     private SidebarService sidebarService;
-
-    public void setKillTrackerService(KillTrackerService s) { this.killTrackerService = s; }
-    public void setBorderService(BorderService s) { this.borderService = s; }
-    public void setSidebarService(SidebarService s) { this.sidebarService = s; }
 
     public GameService(RivalCorePlugin plugin,
                        ConfigManager configManager,
@@ -63,6 +57,18 @@ public class GameService {
         this.bossBarService = bossBarService;
         this.teamService = teamService;
         this.timerService = timerService;
+    }
+
+    public void setKillTrackerService(KillTrackerService s) {
+        this.killTrackerService = s;
+    }
+
+    public void setBorderService(BorderService s) {
+        this.borderService = s;
+    }
+
+    public void setSidebarService(SidebarService s) {
+        this.sidebarService = s;
     }
 
     public void startGame(CommandSender sender) {
@@ -189,7 +195,8 @@ public class GameService {
             case ENDED -> {
                 onGameEnd();
             }
-            default -> {}
+            default -> {
+            }
         }
     }
 
@@ -237,11 +244,12 @@ public class GameService {
                 World world = Bukkit.getWorld(configManager.getSpawnWorld());
                 if (world != null) {
                     switch (timerService.getCurrentPhase()) {
-                        case INITIAL    -> borderService.onGameStart(world);
-                        case PHASE_TWO  -> borderService.onPhaseTwo(world);
+                        case INITIAL -> borderService.onGameStart(world);
+                        case PHASE_TWO -> borderService.onPhaseTwo(world);
                         case PHASE_THREE -> borderService.onPhaseThree(world);
-                        case FINAL      -> borderService.onFinalPhase(world);
-                        default -> {}
+                        case FINAL -> borderService.onFinalPhase(world);
+                        default -> {
+                        }
                     }
                 }
             }

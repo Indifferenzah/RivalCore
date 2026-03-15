@@ -18,7 +18,7 @@ public class PlayerJoinListener implements Listener {
     private final TeamService teamService;
 
     public PlayerJoinListener(RivalCorePlugin plugin, GameService gameService,
-                               BossBarService bossBarService, TeamService teamService) {
+                              BossBarService bossBarService, TeamService teamService) {
         this.plugin = plugin;
         this.gameService = gameService;
         this.bossBarService = bossBarService;

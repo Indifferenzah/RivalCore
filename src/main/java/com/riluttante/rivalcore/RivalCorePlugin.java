@@ -1,32 +1,12 @@
 package com.riluttante.rivalcore;
 
-import com.riluttante.rivalcore.commands.GameCommand;
-import com.riluttante.rivalcore.commands.PvpCommand;
-import com.riluttante.rivalcore.commands.RespawnCommand;
-import com.riluttante.rivalcore.commands.RivalCoreCommand;
-import com.riluttante.rivalcore.commands.SetSpawnCommand;
-import com.riluttante.rivalcore.commands.StartCommand;
-import com.riluttante.rivalcore.commands.TeamsCommand;
+import com.riluttante.rivalcore.commands.*;
 import com.riluttante.rivalcore.config.ConfigManager;
 import com.riluttante.rivalcore.database.DatabaseManager;
 import com.riluttante.rivalcore.database.GameStateRepository;
 import com.riluttante.rivalcore.database.TeamRepository;
-import com.riluttante.rivalcore.listeners.PlayerChatListener;
-import com.riluttante.rivalcore.listeners.PlayerDeathListener;
-import com.riluttante.rivalcore.listeners.PlayerJoinListener;
-import com.riluttante.rivalcore.listeners.PlayerQuitListener;
-import com.riluttante.rivalcore.listeners.PlayerRespawnListener;
-import com.riluttante.rivalcore.listeners.PvpControlListener;
-import com.riluttante.rivalcore.services.BorderService;
-import com.riluttante.rivalcore.services.BossBarService;
-import com.riluttante.rivalcore.services.GameService;
-import com.riluttante.rivalcore.services.KillTrackerService;
-import com.riluttante.rivalcore.services.MessageService;
-import com.riluttante.rivalcore.services.PvpService;
-import com.riluttante.rivalcore.services.SidebarService;
-import com.riluttante.rivalcore.services.SpawnService;
-import com.riluttante.rivalcore.services.TeamService;
-import com.riluttante.rivalcore.services.TimerService;
+import com.riluttante.rivalcore.listeners.*;
+import com.riluttante.rivalcore.services.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RivalCorePlugin extends JavaPlugin {
@@ -76,16 +56,16 @@ public class RivalCorePlugin extends JavaPlugin {
         timerService = new TimerService(this, configManager, bossBarService);
 
         gameService = new GameService(
-            this,
-            configManager,
-            gameStateRepository,
-            teamRepository,
-            messageService,
-            spawnService,
-            pvpService,
-            bossBarService,
-            teamService,
-            timerService
+                this,
+                configManager,
+                gameStateRepository,
+                teamRepository,
+                messageService,
+                spawnService,
+                pvpService,
+                bossBarService,
+                teamService,
+                timerService
         );
 
         // Wire the circular reference
@@ -182,29 +162,61 @@ public class RivalCorePlugin extends JavaPlugin {
 
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(
-            new PlayerDeathListener(this, gameService, messageService, configManager, killTrackerService), this);
+                new PlayerDeathListener(this, gameService, messageService, configManager, killTrackerService), this);
         getServer().getPluginManager().registerEvents(
-            new PlayerRespawnListener(this, gameService, spawnService, messageService), this);
+                new PlayerRespawnListener(this, gameService, spawnService, messageService), this);
         getServer().getPluginManager().registerEvents(
-            new PlayerJoinListener(this, gameService, bossBarService, teamService), this);
+                new PlayerJoinListener(this, gameService, bossBarService, teamService), this);
         getServer().getPluginManager().registerEvents(
-            new PlayerQuitListener(this, gameService, bossBarService), this);
+                new PlayerQuitListener(this, gameService, bossBarService), this);
         getServer().getPluginManager().registerEvents(
-            new PvpControlListener(this, pvpService, messageService, teamService, gameService), this);
+                new PvpControlListener(this, pvpService, messageService, teamService, gameService), this);
         getServer().getPluginManager().registerEvents(
-            new PlayerChatListener(gameService, teamService, configManager), this);
+                new PlayerChatListener(gameService, teamService, configManager), this);
     }
 
     // Getters for services (useful for commands/listeners if needed)
-    public ConfigManager getConfigManager() { return configManager; }
-    public DatabaseManager getDatabaseManager() { return databaseManager; }
-    public GameStateRepository getGameStateRepository() { return gameStateRepository; }
-    public TeamRepository getTeamRepository() { return teamRepository; }
-    public MessageService getMessageService() { return messageService; }
-    public SpawnService getSpawnService() { return spawnService; }
-    public PvpService getPvpService() { return pvpService; }
-    public BossBarService getBossBarService() { return bossBarService; }
-    public TeamService getTeamService() { return teamService; }
-    public TimerService getTimerService() { return timerService; }
-    public GameService getGameService() { return gameService; }
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
+
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    public GameStateRepository getGameStateRepository() {
+        return gameStateRepository;
+    }
+
+    public TeamRepository getTeamRepository() {
+        return teamRepository;
+    }
+
+    public MessageService getMessageService() {
+        return messageService;
+    }
+
+    public SpawnService getSpawnService() {
+        return spawnService;
+    }
+
+    public PvpService getPvpService() {
+        return pvpService;
+    }
+
+    public BossBarService getBossBarService() {
+        return bossBarService;
+    }
+
+    public TeamService getTeamService() {
+        return teamService;
+    }
+
+    public TimerService getTimerService() {
+        return timerService;
+    }
+
+    public GameService getGameService() {
+        return gameService;
+    }
 }

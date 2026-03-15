@@ -1,6 +1,5 @@
 package com.riluttante.rivalcore.services;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +25,9 @@ public class KillTrackerService {
 
     public List<Map.Entry<UUID, Integer>> getTopKillers(int n) {
         return kills.entrySet().stream()
-            .sorted(Map.Entry.<UUID, Integer>comparingByValue().reversed())
-            .limit(n)
-            .toList();
+                .sorted(Map.Entry.<UUID, Integer>comparingByValue().reversed())
+                .limit(n)
+                .toList();
     }
 
     public void clear() {

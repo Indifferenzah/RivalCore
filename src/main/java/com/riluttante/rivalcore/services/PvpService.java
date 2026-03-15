@@ -23,6 +23,10 @@ public class PvpService {
         return pvpEnabled;
     }
 
+    public void setPvpEnabled(boolean enabled) {
+        pvpEnabled = enabled;
+    }
+
     public void enablePvP() {
         pvpEnabled = true;
         persistState();
@@ -31,10 +35,6 @@ public class PvpService {
     public void disablePvP() {
         pvpEnabled = false;
         persistState();
-    }
-
-    public void setPvpEnabled(boolean enabled) {
-        pvpEnabled = enabled;
     }
 
     private void persistState() {

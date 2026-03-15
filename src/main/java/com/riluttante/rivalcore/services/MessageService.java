@@ -66,14 +66,14 @@ public class MessageService {
 
     public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
         Title.Times times = Title.Times.times(
-            Duration.ofMillis(fadeIn * 50L),
-            Duration.ofMillis(stay * 50L),
-            Duration.ofMillis(fadeOut * 50L)
+                Duration.ofMillis(fadeIn * 50L),
+                Duration.ofMillis(stay * 50L),
+                Duration.ofMillis(fadeOut * 50L)
         );
         Title adventureTitle = Title.title(
-            ColorUtil.colorize(title),
-            ColorUtil.colorize(subtitle),
-            times
+                ColorUtil.colorize(title),
+                ColorUtil.colorize(subtitle),
+                times
         );
         player.showTitle(adventureTitle);
     }

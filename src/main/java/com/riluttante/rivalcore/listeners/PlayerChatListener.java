@@ -19,7 +19,7 @@ public class PlayerChatListener implements Listener {
     private final ConfigManager configManager;
 
     public PlayerChatListener(GameService gameService, TeamService teamService,
-                               ConfigManager configManager) {
+                              ConfigManager configManager) {
         this.gameService = gameService;
         this.teamService = teamService;
         this.configManager = configManager;
@@ -30,8 +30,8 @@ public class PlayerChatListener implements Listener {
         Player player = event.getPlayer();
 
         boolean showTeam = gameService.isGameRunning()
-            && teamService.isTeamsRevealed()
-            && !gameService.isEliminated(player.getUniqueId());
+                && teamService.isTeamsRevealed()
+                && !gameService.isEliminated(player.getUniqueId());
 
         final String format;
         final String teamPrefix;
@@ -41,8 +41,8 @@ public class PlayerChatListener implements Listener {
             if (team != null) {
                 format = configManager.getChatFormatTeam();
                 teamPrefix = team == GameTeam.RED
-                    ? configManager.getChatPrefixRed()
-                    : configManager.getChatPrefixBlue();
+                        ? configManager.getChatPrefixRed()
+                        : configManager.getChatPrefixBlue();
             } else {
                 format = configManager.getChatFormatDefault();
                 teamPrefix = "";
@@ -53,7 +53,7 @@ public class PlayerChatListener implements Listener {
         }
 
         event.renderer((source, sourceDisplayName, message, viewer) ->
-            buildMessage(format, player.getName(), teamPrefix, message)
+                buildMessage(format, player.getName(), teamPrefix, message)
         );
     }
 
@@ -65,15 +65,15 @@ public class PlayerChatListener implements Listener {
     private Component buildMessage(String format, String playerName,
                                    String teamPrefix, Component message) {
         String resolved = format
-            .replace("{team}", teamPrefix)
-            .replace("{player}", playerName);
+                .replace("{team}", teamPrefix)
+                .replace("{player}", playerName);
 
         int msgIdx = resolved.indexOf("{message}");
         if (msgIdx == -1) {
             return ColorUtil.colorize(resolved);
         }
 
-        String left  = resolved.substring(0, msgIdx);
+        String left = resolved.substring(0, msgIdx);
         String right = resolved.substring(msgIdx + "{message}".length());
 
         Component result = ColorUtil.colorize(left).append(message);

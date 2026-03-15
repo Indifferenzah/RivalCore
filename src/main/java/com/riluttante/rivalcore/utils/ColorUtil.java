@@ -4,7 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public final class ColorUtil {
-    private ColorUtil() {}
+    private ColorUtil() {
+    }
 
     public static Component colorize(String text) {
         return LegacyComponentSerializer.legacyAmpersand().deserialize(text);

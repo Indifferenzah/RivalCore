@@ -40,7 +40,7 @@ public class GameStateRepository {
 
     public void saveGameData(GameData data) {
         String sql = "MERGE INTO game_state (id, state, start_timestamp, teams_revealed, pvp_enabled) " +
-                     "KEY(id) VALUES(1, ?, ?, ?, ?)";
+                "KEY(id) VALUES(1, ?, ?, ?, ?)";
         try (Connection conn = databaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, data.getState().name());
@@ -55,7 +55,7 @@ public class GameStateRepository {
 
     public void resetGameData() {
         String sql = "MERGE INTO game_state (id, state, start_timestamp, teams_revealed, pvp_enabled) " +
-                     "KEY(id) VALUES(1, 'WAITING', 0, FALSE, TRUE)";
+                "KEY(id) VALUES(1, 'WAITING', 0, FALSE, TRUE)";
         try (Connection conn = databaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.executeUpdate();

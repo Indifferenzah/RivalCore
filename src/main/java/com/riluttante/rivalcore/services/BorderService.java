@@ -14,8 +14,8 @@ public class BorderService {
 
     private long phaseDuration() {
         return configManager.isDebugMode()
-            ? 60L
-            : configManager.getBorderPhaseDurationSeconds();
+                ? 60L
+                : configManager.getBorderPhaseDurationSeconds();
     }
 
     public void onGameStart(World world) {

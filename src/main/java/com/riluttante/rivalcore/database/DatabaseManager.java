@@ -2,18 +2,14 @@ package com.riluttante.rivalcore.database;
 
 import com.riluttante.rivalcore.RivalCorePlugin;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.logging.Level;
 
 public class DatabaseManager {
 
     private final RivalCorePlugin plugin;
-    private Connection connection;
     private final String jdbcUrl;
+    private Connection connection;
 
     public DatabaseManager(RivalCorePlugin plugin) {
         this.plugin = plugin;
@@ -38,28 +34,28 @@ public class DatabaseManager {
     private void createTables() throws SQLException {
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(
-                "CREATE TABLE IF NOT EXISTS game_state (" +
-                "id INTEGER NOT NULL," +
-                "state VARCHAR(20) NOT NULL," +
-                "start_timestamp BIGINT NOT NULL DEFAULT 0," +
-                "teams_revealed BOOLEAN NOT NULL DEFAULT FALSE," +
-                "pvp_enabled BOOLEAN NOT NULL DEFAULT TRUE," +
-                "PRIMARY KEY (id))"
+                    "CREATE TABLE IF NOT EXISTS game_state (" +
+                            "id INTEGER NOT NULL," +
+                            "state VARCHAR(20) NOT NULL," +
+                            "start_timestamp BIGINT NOT NULL DEFAULT 0," +
+                            "teams_revealed BOOLEAN NOT NULL DEFAULT FALSE," +
+                            "pvp_enabled BOOLEAN NOT NULL DEFAULT TRUE," +
+                            "PRIMARY KEY (id))"
             );
             stmt.execute(
-                "CREATE TABLE IF NOT EXISTS player_teams (" +
-                "uuid VARCHAR(36) NOT NULL," +
-                "player_name VARCHAR(64) NOT NULL," +
-                "team VARCHAR(10) NOT NULL," +
-                "assigned_at BIGINT NOT NULL," +
-                "PRIMARY KEY (uuid))"
+                    "CREATE TABLE IF NOT EXISTS player_teams (" +
+                            "uuid VARCHAR(36) NOT NULL," +
+                            "player_name VARCHAR(64) NOT NULL," +
+                            "team VARCHAR(10) NOT NULL," +
+                            "assigned_at BIGINT NOT NULL," +
+                            "PRIMARY KEY (uuid))"
             );
         }
     }
 
     private void insertDefaultGameState() throws SQLException {
         String sql = "MERGE INTO game_state (id, state, start_timestamp, teams_revealed, pvp_enabled) " +
-                     "KEY(id) VALUES(1, 'WAITING', 0, FALSE, TRUE)";
+                "KEY(id) VALUES(1, 'WAITING', 0, FALSE, TRUE)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.executeUpdate();
         }

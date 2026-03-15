@@ -22,12 +22,12 @@ public class SpawnService {
         World world = Bukkit.getWorld(worldName);
         if (world == null) return null;
         return new Location(
-            world,
-            configManager.getSpawnX(),
-            configManager.getSpawnY(),
-            configManager.getSpawnZ(),
-            configManager.getSpawnYaw(),
-            configManager.getSpawnPitch()
+                world,
+                configManager.getSpawnX(),
+                configManager.getSpawnY(),
+                configManager.getSpawnZ(),
+                configManager.getSpawnYaw(),
+                configManager.getSpawnPitch()
         );
     }
 

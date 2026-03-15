@@ -5,7 +5,6 @@ import com.riluttante.rivalcore.config.ConfigManager;
 import com.riluttante.rivalcore.models.GamePhase;
 import com.riluttante.rivalcore.utils.ColorUtil;
 import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -23,10 +22,10 @@ public class BossBarService {
     public void createBossBar() {
         String initialText = configManager.getBossbarPhaseInitial().replace("{time}", "00:00");
         bossBar = BossBar.bossBar(
-            ColorUtil.colorize(initialText),
-            1.0f,
-            BossBar.Color.GREEN,
-            BossBar.Overlay.PROGRESS
+                ColorUtil.colorize(initialText),
+                1.0f,
+                BossBar.Color.GREEN,
+                BossBar.Overlay.PROGRESS
         );
     }
 
@@ -35,8 +34,8 @@ public class BossBarService {
 
         long totalSeconds = configManager.getEffectiveTotalMatchMinutes() * 60L;
         float progress = (totalSeconds > 0)
-            ? Math.max(0f, Math.min(1f, (float) remainingSeconds / (float) totalSeconds))
-            : 0f;
+                ? Math.max(0f, Math.min(1f, (float) remainingSeconds / (float) totalSeconds))
+                : 0f;
 
         String timeFormatted = ColorUtil.formatTime(Math.max(0, remainingSeconds));
         String rawText;

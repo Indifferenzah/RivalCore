@@ -10,7 +10,9 @@
 
 ## Panoramica
 
-RivalCore è un plugin PvP competitivo stile UHC con squadre (RED vs BLU), fasi progressive, timer, world border dinamico e una UI ricca (BossBar, sidebar, tab HP, chat formattata). Lo stato della partita persiste tra i riavvii grazie a un database H2 embedded.
+RivalCore è un plugin PvP competitivo stile UHC con squadre (RED vs BLU), fasi progressive, timer, world border dinamico
+e una UI ricca (BossBar, sidebar, tab HP, chat formattata). Lo stato della partita persiste tra i riavvii grazie a un
+database H2 embedded.
 
 ---
 
@@ -20,13 +22,13 @@ RivalCore è un plugin PvP competitivo stile UHC con squadre (RED vs BLU), fasi 
 
 La partita dura **120 minuti** ed è divisa in 4 fasi automatiche:
 
-| Fase | Minuto | Cosa succede |
-|------|--------|--------------|
-| **Initial** | 0–30 | Respawn consentito, PvP libero, warm-up |
-| **Phase Two** | 30–60 | Morte permanente attiva, niente respawn |
-| **Phase Three** | 60–90 | Squadre rivelate pubblicamente |
-| **Final** | 90–120 | Deathmatch finale |
-| **Ended** | 120+ | PvP disabilitato, tutti teletrasportati allo spawn |
+| Fase            | Minuto | Cosa succede                                       |
+|-----------------|--------|----------------------------------------------------|
+| **Initial**     | 0–30   | Respawn consentito, PvP libero, warm-up            |
+| **Phase Two**   | 30–60  | Morte permanente attiva, niente respawn            |
+| **Phase Three** | 60–90  | Squadre rivelate pubblicamente                     |
+| **Final**       | 90–120 | Deathmatch finale                                  |
+| **Ended**       | 120+   | PvP disabilitato, tutti teletrasportati allo spawn |
 
 > Modalità **debug**: tutte le fasi compresse a 1 minuto per testare rapidamente.
 
@@ -38,6 +40,7 @@ La partita dura **120 minuti** ed è divisa in 4 fasi automatiche:
 ![BossBar](https://i.imgur.com/2usLzLX.png)
 
 Barra sempre visibile con fase corrente, tempo rimasto e colore per fase:
+
 - **Verde** → Initial &nbsp; **Giallo** → Phase Two &nbsp; **Rosso** → Phase Three &nbsp; **Rosa** → Final
 
 ### Sidebar — Kill Leaderboard
@@ -82,29 +85,29 @@ Dopo la rivelazione: `[ROSSO] NomeGiocatore: messaggio`
 
 Border che si restringe progressivamente:
 
-| Fase | Da → A |
-|------|--------|
+| Fase    | Da → A             |
+|---------|--------------------|
 | Phase 1 | 1200 → 800 blocchi |
-| Phase 2 | 800 → 600 blocchi |
-| Phase 3 | 600 → 200 blocchi |
+| Phase 2 | 800 → 600 blocchi  |
+| Phase 3 | 600 → 200 blocchi  |
 
 ---
 
 ## Comandi
 
-| Comando | Permesso | Descrizione |
-|---------|----------|-------------|
-| `/start` | `rivalcore.command.start` | Avvia la partita |
-| `/game status` | `rivalcore.command.game` | Mostra fase e tempo rimasto |
-| `/game stop` | `rivalcore.command.game` | Termina la partita |
-| `/teams show` | `rivalcore.command.teams.show` | Rivela le squadre pubblicamente |
-| `/teams list` | `rivalcore.command.teams.show` | Lista giocatori per squadra |
-| `/teams warn` | `rivalcore.command.teams.show` | Ricorda la squadra via actionbar |
-| `/pvp enable` | `rivalcore.command.pvp.enable` | Abilita PvP globale |
-| `/pvp disable` | `rivalcore.command.pvp.disable` | Disabilita PvP globale |
-| `/setspawn` | `rivalcore.command.setspawn` | Imposta spawn alla posizione attuale |
-| `/respawn <giocatore>` | `rivalcore.command.respawn` | Ripristina un giocatore eliminato |
-| `/rivalcore reload` | `rivalcore.command.reload` | Ricarica config.yml |
+| Comando                | Permesso                        | Descrizione                          |
+|------------------------|---------------------------------|--------------------------------------|
+| `/start`               | `rivalcore.command.start`       | Avvia la partita                     |
+| `/game status`         | `rivalcore.command.game`        | Mostra fase e tempo rimasto          |
+| `/game stop`           | `rivalcore.command.game`        | Termina la partita                   |
+| `/teams show`          | `rivalcore.command.teams.show`  | Rivela le squadre pubblicamente      |
+| `/teams list`          | `rivalcore.command.teams.show`  | Lista giocatori per squadra          |
+| `/teams warn`          | `rivalcore.command.teams.show`  | Ricorda la squadra via actionbar     |
+| `/pvp enable`          | `rivalcore.command.pvp.enable`  | Abilita PvP globale                  |
+| `/pvp disable`         | `rivalcore.command.pvp.disable` | Disabilita PvP globale               |
+| `/setspawn`            | `rivalcore.command.setspawn`    | Imposta spawn alla posizione attuale |
+| `/respawn <giocatore>` | `rivalcore.command.respawn`     | Ripristina un giocatore eliminato    |
+| `/rivalcore reload`    | `rivalcore.command.reload`      | Ricarica config.yml                  |
 
 > Tutti i permessi sono riservati agli **OP** di default.
 

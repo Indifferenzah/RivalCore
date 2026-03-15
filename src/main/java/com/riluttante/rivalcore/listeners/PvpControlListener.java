@@ -24,13 +24,25 @@ public class PvpControlListener implements Listener {
     private final GameService gameService;
 
     public PvpControlListener(RivalCorePlugin plugin, PvpService pvpService,
-                               MessageService messageService,
-                               TeamService teamService, GameService gameService) {
+                              MessageService messageService,
+                              TeamService teamService, GameService gameService) {
         this.plugin = plugin;
         this.pvpService = pvpService;
         this.messageService = messageService;
         this.teamService = teamService;
         this.gameService = gameService;
+    }
+
+    /**
+     * Returns the Player responsible for the damage, handling projectiles.
+     */
+    private static Player resolveAttacker(Entity damager) {
+        if (damager instanceof Player p) return p;
+        if (damager instanceof Projectile projectile) {
+            ProjectileSource shooter = projectile.getShooter();
+            if (shooter instanceof Player p) return p;
+        }
+        return null;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -50,21 +62,11 @@ public class PvpControlListener implements Listener {
         // Friendly fire: block same-team hits after teams are revealed
         if (gameService.isGameRunning() && teamService.isTeamsRevealed()) {
             GameTeam attackerTeam = teamService.getTeam(attacker.getUniqueId());
-            GameTeam damagedTeam  = teamService.getTeam(damaged.getUniqueId());
+            GameTeam damagedTeam = teamService.getTeam(damaged.getUniqueId());
             if (attackerTeam != null && attackerTeam == damagedTeam) {
                 event.setCancelled(true);
                 messageService.sendMessage(attacker, "friendly-fire-blocked");
             }
         }
-    }
-
-    /** Returns the Player responsible for the damage, handling projectiles. */
-    private static Player resolveAttacker(Entity damager) {
-        if (damager instanceof Player p) return p;
-        if (damager instanceof Projectile projectile) {
-            ProjectileSource shooter = projectile.getShooter();
-            if (shooter instanceof Player p) return p;
-        }
-        return null;
     }
 }
